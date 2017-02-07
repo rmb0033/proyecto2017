@@ -1,0 +1,67 @@
+<?php
+$name=$_POST["name"];
+$pass=$_POST["pass"];
+//funciones
+function pintar_user_pass()
+{
+	echo '<div class="login">';
+	echo '	<form method="post">';
+	echo '		<p><input type="text" name="name" value="" placeholder="Username or Email"></p>';
+	echo '		<p><input type="password" name="pass" value="" placeholder="Password"></p>';
+	echo '		<p class="submit"><input type="submit" name="commit" value="Login"></p>';
+	echo '	</form>';
+	echo '</div>';
+}
+function pintar_links()
+{
+	
+	echo '<center>';
+	echo '	<h1 style="font-family:arial"><a href="tramasCAN.php">CAN frame log</a><br></h1>';
+	echo '	<h1 style="font-family:arial"><a href="LOGs.php">Event log</a></h1>';
+	if ($_SESSION["permiso"]==1){
+		echo '	<h1 style="font-family:arial"><a href="config.php">Configuration</a></h1>';
+	}
+	echo '</center>';
+}
+function iniciar_sesion($per)
+{
+	session_start();
+	$_SESSION["permiso"]=$per;
+}
+
+?>
+<html>
+<head>
+	<title>ASTI DATALOGGER</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<p>
+	<center><IMG SRC="logobordesrojo.jpg">
+	</center>
+	</p>
+	<p>
+	<?php
+	$links=1;
+	if (isset($name) && isset($pass)){
+		if (($name=="root" && $pass=="Astitsi12") || 
+		    ($name=="ASTICONFIG" && $pass=="ASTICONFIG")) {
+			iniciar_sesion(1);
+			pintar_links();
+			$links=0;
+		}
+		else if ($name=="ASTI" && $pass=="ASTI"){
+			iniciar_sesion(0);
+			pintar_links();
+			$links=0;
+		}
+	}
+	if($links==1){
+		pintar_user_pass();
+	}
+	?>
+	</p>
+	
+</body>
+</html>
